@@ -11,23 +11,15 @@
 class Solution {
 public:
     ListNode* deleteDuplicates(ListNode* head) {
-        unordered_map<int,bool> table;
         ListNode* curr = head;
-        ListNode* prev = NULL;
         
-        while(curr!=NULL)
+        while(curr)
         {
-            if(table[curr->val])
+            while(curr->next && curr->next->val == curr->val)
             {
-                prev->next = curr->next;
-                delete curr;
-                curr = prev->next;
+                curr->next = curr->next->next;
             }
-            else{
-                table[curr->val] = true;
-                prev = curr;
-                curr = curr->next;
-            }
+            curr = curr->next;
         }
         return head;
     }
