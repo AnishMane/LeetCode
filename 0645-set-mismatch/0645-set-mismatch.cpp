@@ -1,26 +1,23 @@
 class Solution {
 public:
     vector<int> findErrorNums(vector<int>& nums) {
-        vector<int> result(2);
-        unordered_set<int> hashSet;
-        sort(nums.begin(),nums.end());
-        for(int i=0;i<nums.size();i++)
-        {
-            if(hashSet.find(nums[i])!= hashSet.end()){
-                result[0] = nums[i];
-            }
-            else{
-                hashSet.insert(nums[i]);
-            }
+        int n = nums.size();
+        long long sum =0,squareSum = 0;
+        long long expectedSum = n*(n+1)/2;
+        long long expectedSquareSum = (long long)n*(n+1)*(2*n+1)/6;
+        
+        for(int num:nums){
+            sum += num;
+            squareSum += (long long) num*num;
         }
-        for(int i=0;i<nums.size();i++){
-            if(hashSet.find(i+1)!=hashSet.end()){
-                continue;
-            }
-            else{
-                result[1] = i+1;
-            }
-        }
-        return result;
+        
+        long long diffSum = sum - expectedSum;
+        long long diffSquareSum = squareSum - expectedSquareSum;
+        
+        long long sumOfNums = diffSquareSum/diffSum;
+        
+        int duplicate = (diffSum + sumOfNums)/2;
+        int missing = sumOfNums - duplicate;
+        return {duplicate,missing};
     }
 };
