@@ -1,17 +1,17 @@
 class Solution {
 public:
     bool makeEqual(vector<string>& words) {
-        unordered_map<char,int> hashMap;
-        for(int i=0;i<words.size();i++)
+        vector<int> freq(26,0);
+        for(auto &word:words)
         {
-            for(char c:words[i])
-            {
-                hashMap[c]++;
+            for(char c:word){
+                freq[c-'a']++;
             }
         }
-        for(auto c:hashMap)
+        
+        for(int i =0;i<26;i++)
         {
-            if(c.second%words.size() != 0)
+            if(freq[i]&&freq[i]%words.size() !=0)
             {
                 return false;
             }
