@@ -1,22 +1,16 @@
 class Solution {
 public:
     int maxLengthBetweenEqualCharacters(string s) {
-        unordered_map<char,vector<int>> hashMap;
+        int index[26] = {0};
+        int result = -1;
         for(int i=0;i<s.size();i++)
         {
-            hashMap[s[i]].push_back(i);
+            index[s[i]-'a'] = i;
         }
-        
-        int maxLength = -1;
-        for(auto c:hashMap)
+        for(int i=0;i<s.size();i++)
         {
-            if(c.second.size() > 1){
-                for(int i=1;i<c.second.size();i++)
-                    {
-                        maxLength = max(maxLength, c.second[i] - c.second[0]-1);
-                }
-            }
+            result = max(result, index[s[i]-'a']-i-1);
         }
-        return maxLength;
+        return result;
     }
 };
