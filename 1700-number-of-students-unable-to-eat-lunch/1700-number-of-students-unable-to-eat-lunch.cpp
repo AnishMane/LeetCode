@@ -1,28 +1,18 @@
 class Solution {
 public:
     int countStudents(vector<int>& students, vector<int>& sandwiches) {
-        stack<int> sw;
-        for(int i=sandwiches.size()-1;i>=0;--i){
-            sw.push(sandwiches[i]);
+        unordered_map<int,int> hashMap;
+        for(int num:students){
+            hashMap[num]++;
         }
-        queue<int> st;
-        for(int i=0;i<students.size();++i){
-            st.push(students[i]);
-        }
-        int count = 0;
-        while(!st.empty() && count < sw.size()){
-            if(sw.top() == st.front()){
-                sw.pop();
-                st.pop();
-                count = 0;
+        for(int i=0;i<sandwiches.size();++i){
+            if(hashMap[sandwiches[i]] > 0){
+                hashMap[sandwiches[i]]--;
             }
             else{
-                int temp = st.front();
-                st.pop();
-                st.push(temp);
-                count++;
+                return sandwiches.size()-i;
             }
         }
-        return st.size();
+        return 0;
     }
 };
