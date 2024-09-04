@@ -10,10 +10,10 @@ public:
             }
             s.push({temperatures[i],i});
         }
-        // while(!s.empty()){
-        //     result.push_back(0);
-        //     s.pop();
-        // }
+        while(!s.empty()){
+            result[s.top().second] = 0;;
+            s.pop();
+        }
         return result;
     }
 };
