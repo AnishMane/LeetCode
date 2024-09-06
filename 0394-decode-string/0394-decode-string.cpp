@@ -1,38 +1,30 @@
 class Solution {
 public:
-    string decodeString(string s) {
-        stack<char> st;
-        string result = "";
-        for(int i=0;i<s.size();++i){
-            if(s[i] == ']'){
-                string main = "";
-                string temp = "";
-                while(st.top() != '['){
-                    temp = st.top() + temp;
-                    st.pop();
-                }
-                st.pop();
-                string num = "";
-                while(!st.empty() && st.top() - '0'>=0 && st.top() - '0' < 10 ){
-                    num = st.top() + num;
-                    st.pop();
-                }
-                int newNum = stoi(num);
-                for(int j=0;j<newNum;++j){
-                    main += temp;
-                }
-                for(char c:main){
-                    st.push(c);
-                }
+    string decoder(string& s, int& i){
+        string res = "";
+        while(i<s.length() && s[i] != ']'){
+            if(!isdigit(s[i])){
+                res += s[i++];
             }
             else{
-                st.push(s[i]);
+                int n =0;
+                while(i<s.length() && isdigit(s[i])){
+                    n = n*10 + s[i++] - '0';
+                }
+                i++;
+                string t = decoder(s,i);
+                i++;
+                
+                while(n-->0){
+                    res += t;
+                }
             }
         }
-        while(!st.empty()){
-            result = st.top() + result;
-            st.pop();
-        }
-        return result;
+        return res;
+    }
+    
+    string decodeString(string s) {
+        int i=0;
+        return decoder(s,i);
     }
 };
