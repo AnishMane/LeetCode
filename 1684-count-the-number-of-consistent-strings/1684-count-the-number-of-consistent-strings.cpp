@@ -1,20 +1,20 @@
 class Solution {
 public:
     int countConsistentStrings(string allowed, vector<string>& words) {
-        int count =0;
-        unordered_set<char> hashSet;
+        int arr[26] = {0};
         
-        for(int i=0;i<allowed.size();++i){
-            hashSet.insert(allowed[i]);    
+        for(char c: allowed){
+            arr[c-'a'] = 1; 
         }
-        for(int i=0;i<words.size();++i){
-            bool checker = true;
-            for(int j=0;j<words[i].size();++j){
-                if(!hashSet.count(words[i][j])){
-                    checker = false;
+        int count = 0;
+        for(string word:words){
+            int checker = 1;
+            for(char c:word){
+                if(arr[c-'a'] == 0){
+                    checker = 0;
                 }
             }
-            count += checker ? 1 : 0;
+            count += checker;
         }
         return count;
     }
