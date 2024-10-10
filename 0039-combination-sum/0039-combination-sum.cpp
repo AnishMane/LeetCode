@@ -3,19 +3,18 @@ private:
     vector<vector<int>> result;
 public:
     void combinations(int i, int t, vector<int> candidates, vector<int> res){
-        if(i>=candidates.size()){
-            return;
-        }
-        if(t<0){
-            return;
-        }
-        if(t==0){
+        if(i==candidates.size()){
+            if(t==0){
             result.push_back(res);
+        }
             return;
         }
-        res.push_back(candidates[i]);
-        combinations(i,t-candidates[i],candidates,res);
-        res.pop_back();
+        if(candidates[i] <= t){
+            res.push_back(candidates[i]);
+            combinations(i,t-candidates[i],candidates,res);
+            res.pop_back();
+        }
+        
         combinations(i+1,t,candidates,res);
     }
     
