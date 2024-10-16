@@ -16,9 +16,13 @@ public:
         if(root){
             if(root->val >= low && root->val <= high){
                 result+= root->val;
+                calcSum(root->right,low,high);
+                calcSum(root->left,low,high);
             }
-            calcSum(root->left,low,high);
-            calcSum(root->right,low,high);
+            else if(root->val <= low)
+                calcSum(root->right,low,high);
+            else if(root->val >= high)
+                calcSum(root->left,low,high);
         }
         return;
     }
