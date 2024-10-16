@@ -11,24 +11,12 @@
  */
 class Solution {
 public:
-    int result = 0;
-    void calcSum(TreeNode* root, int low, int high){
-        if(root){
-            if(root->val >= low && root->val <= high){
-                result+= root->val;
-                calcSum(root->right,low,high);
-                calcSum(root->left,low,high);
-            }
-            else if(root->val <= low)
-                calcSum(root->right,low,high);
-            else if(root->val >= high)
-                calcSum(root->left,low,high);
-        }
-        return;
-    }
-    
     int rangeSumBST(TreeNode* root, int low, int high) {
-        calcSum(root,low,high);
-        return result;
+        if(!root) return 0;
+        if(root->val < low)
+            return rangeSumBST(root->right,low,high);
+        if(root->val > high)
+            return rangeSumBST(root->left,low,high);
+        return root->val + rangeSumBST(root->left,low,high) + rangeSumBST(root->right,low,high);
     }
 };
