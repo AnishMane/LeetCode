@@ -11,28 +11,23 @@
  */
 class Solution {
 public:
-    
-    int indexOfArray(vector<int>& inorder, int val){
-        for(int i=0;i<inorder.size();i++){
-            if(inorder[i] == val)
-                return i;
-        }
-        return -1;
-    }
-    
-    TreeNode* dfs(vector<int>& inorder,vector<int>& postorder, int left, int right){
+    TreeNode* dfs(vector<int>& inorder,vector<int>& postorder,unordered_map<int,int>& hashMap, int left, int right){
         if(left>right)
             return NULL;
         int rootVal = postorder.back();
         postorder.pop_back();
-        int idx = indexOfArray(inorder,rootVal);
+        int idx = hashMap[rootVal];
         TreeNode*root = new TreeNode(rootVal);
-        root->right = dfs(inorder,postorder,idx+1,right);
-        root->left = dfs(inorder,postorder,left,idx-1);
+        root->right = dfs(inorder,postorder,hashMap,idx+1,right);
+        root->left = dfs(inorder,postorder,hashMap,left,idx-1);
         return root;
     }
     
     TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
-        return dfs(inorder,postorder,0,postorder.size()-1);
+        unordered_map<int,int> hashMap;
+        for(int i=0;i<inorder.size();i++){
+            hashMap[inorder[i]] = i;
+        }
+        return dfs(inorder,postorder,hashMap,0,postorder.size()-1);
     }
 };
