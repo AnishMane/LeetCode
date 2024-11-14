@@ -1,41 +1,25 @@
 class Solution {
 public:
     
-    void helper(vector<vector<int>>& image, int sr, int sc, int color, vector<vector<int>> vis){
-        queue<pair<int,int>> q;
-        q.push({sr,sc});
-        int initial = image[sr][sc];
-        image[sr][sc] = color;
-        vis[sr][sc] = 1;
+    void dfs(int row, int col, vector<vector<int>>& result, vector<vector<int>>& image,  int color, int delRow[], int delCol[], int initial){
+        result[row][col] = color;
         int n = image.size();
         int m = image[0].size();
-        
-        while(!q.empty()){
-            int i = q.front().first;
-            int j = q.front().second;
-            q.pop();
-            
-            for(int delrow = -1;delrow<=1;delrow++){
-                for(int delcol = -1;delcol<=1;delcol++){
-                    if(delcol == 0 || delrow == 0){
-                        int nrow = i + delrow;
-                        int ncol = j + delcol;
-                        if(nrow>=0 && nrow<n && ncol>=0 && ncol<m){
-                            if(image[nrow][ncol] == initial && !vis[nrow][ncol]){
-                                image[nrow][ncol] = color;
-                                vis[nrow][ncol] = 1;
-                                q.push({nrow,ncol});
-                            }
-                        }
-                    }
-                }
+        for(int i=0;i<4;i++){
+            int nrow = row + delRow[i];
+            int ncol = col + delCol[i];
+            if(nrow>=0 && nrow<n && ncol >=0 && ncol<m && image[nrow][ncol] == initial && result[nrow][ncol]!=color){
+                dfs(nrow,ncol,result,image,color,delRow,delCol,initial);
             }
         }
     }
     
     vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
-        vector<vector<int>> vis(image.size(),vector<int>(image[0].size(), 0));
-        helper(image,sr,sc,color,vis);
-        return image;
+        int initial = image[sr][sc];
+        vector<vector<int>> result = image;
+        int delRow[] = {-1,0,+1,0};
+        int delCol[] = {0,+1,0,-1};
+        dfs(sr,sc,result,image, color, delRow, delCol, initial);
+        return result;
     }
 };
