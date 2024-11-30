@@ -6,7 +6,7 @@ public:
         for(int i=0;i<parent.size();i++){
             string temp1 = parent;
             string temp2 = parent;
-            char c1 = (((temp1[i]-'0')+1+10)%10) + '0';
+            char c1 = (((temp1[i]-'0')+1)%10) + '0';
             char c2 = (((temp2[i]-'0')-1+10)%10) + '0';
             temp1[i] = c1;
             temp2[i] = c2;
