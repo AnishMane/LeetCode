@@ -1,35 +1,19 @@
 class Solution {
 public:
     bool isValidSudoku(vector<vector<char>>& board) {
-        for(int i=0;i<board.size();i++){
-            unordered_set<char> rowSet;
-            unordered_set<char> colSet;
-            for(int j=0;j<board[0].size();j++){
-                if(board[i][j]!='.'){
-                    if(rowSet.count(board[i][j]))
-                        return false;
-                    rowSet.insert(board[i][j]);
-                }
-                if(board[j][i] != '.'){
-                    if(colSet.count(board[j][i]))
-                        return false;
-                    colSet.insert(board[j][i]);
-                }
-            }
-        }
+        vector<unordered_set<char>> rowSet(9), colSet(9), blockSet(9);
         
-        for(int i=0;i<9;i+=3){
-            for(int j=0;j<9;j+=3){
-                unordered_set<char> blockSet;
-                for(int a=0;a<3;a++){
-                    for(int b=0;b<3;b++){
-                        if(board[i+a][j+b]!='.'){
-                            if(blockSet.count(board[i+a][j+b]))
-                                return false;
-                            blockSet.insert(board[i+a][j+b]);
-                        }
-                    }
-                }
+        for(int i=0;i<9;i++){
+            for(int j=0;j<9;j++){
+                int n = board[i][j];
+                if(n=='.') continue;
+                
+                int blockIndex = (i/3)*3 + (j/3);
+                if(rowSet[i].count(n) || colSet[j].count(n) || blockSet[blockIndex].count(n))
+                    return false;
+                rowSet[i].insert(n);
+                colSet[j].insert(n);
+                blockSet[blockIndex].insert(n);
             }
         }
         return true;
