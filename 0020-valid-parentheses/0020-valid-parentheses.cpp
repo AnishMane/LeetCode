@@ -1,27 +1,24 @@
 class Solution {
 public:
     bool isValid(string s) {
-        stack<char> st;
-        unordered_map<char,char> hashMap;
-        hashMap['('] = ')';
-        hashMap['{'] = '}';
-        hashMap['['] = ']';
-        
-       for(char c:s){
-           if(c=='(' || c=='{' || c=='['){
-               st.push(c);
-               continue;
-            }
-               
-           if(st.empty() || hashMap[st.top()] != c )
-               return false;
-           else{
-                st.pop();
+        stack<int> st;
+        for(char c:s){
+            if(c=='('||c=='{'||c=='['){
+                st.push(c);
                 continue;
-            }     
-         }
-        if(!st.empty())
-            return false;
-        return true;
+            }
+            
+            if(st.empty()||
+              c==')' && st.top()!='(' ||
+              c=='}' && st.top()!='{' ||
+              c==']' && st.top()!='['){
+                return false;
+            }
+                
+            else{
+                st.pop();
+            } 
+        }
+        return st.empty() ? true:false;
     }
 };
