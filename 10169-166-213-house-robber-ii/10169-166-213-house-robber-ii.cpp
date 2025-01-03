@@ -1,10 +1,14 @@
 class Solution {
 public:
-
+    
+//     int maximumNonAdjacentSum(vector<int>& nums){
+//         int n = nums.size();
+        
+//         int prev = 
+//     }
+    
     int rob(vector<int>& nums) {
         int n = nums.size();
-        vector<int> dp1(n-1,-1);
-        vector<int> dp2(n-1,-1);
         
         if(n==1)
             return nums[0];
@@ -12,22 +16,27 @@ public:
         for(int i=1;i<n;++i){
             first[i-1] = nums[i];
         }
-        dp1[0] = nums[0];
-        dp2[0] = first[0];
-        int neg = 0;
+        int prevA = nums[0];
+        int prevB = first[0];
+        int prevA2 = 0;
+        int prevB2 = 0;
         
         for(int i=1;i<n-1;++i){
-            int pick = i>1 ? nums[i] + dp1[i-2] : nums[i] + 0;
-            int notPick = 0 + dp1[i-1];
+            int pick = nums[i] + prevA2;
+            int notPick = 0 + prevA;
             
-            dp1[i] = max(pick,notPick);
+            int temp = max(pick,notPick);
+            prevA2 = prevA;
+            prevA = temp;
         }
         for(int i=1;i<n-1;++i){
-            int pick = i>1 ? first[i] + dp2[i-2] : first[i] + 0;
-            int notPick = 0 + dp2[i-1];
+            int pick = first[i] + prevB2;
+            int notPick = 0 + prevB;
             
-            dp2[i] = max(pick,notPick);
+            int temp = max(pick,notPick);
+            prevB2 = prevB;
+            prevB = temp;
         }
-        return max(dp2[n-2], dp1[n-2]);
+        return max(prevA,prevB);
     }
 };
