@@ -16,11 +16,19 @@ public:
         int n = cost.size();
         vector<int> costs(n+2);
         vector<int> dp(n+2,-1);
+        dp[0] = 0;
         costs[0] = 0;
         costs[n+1] = 0;
         for(int i=1;i<n+1;++i){
             costs[i] = cost[i-1];
         }
-        return recursion(costs,n+1,dp);
+        for(int i=1;i<n+2;++i){
+            int first = dp[i-1] + costs[i];
+            int second = INT_MAX;
+            if(i>1)
+                second = dp[i-2] + costs[i];
+            dp[i] = min(first,second);
+        }
+        return dp[n+1];
     }
 };
