@@ -5,23 +5,22 @@ public:
         string s1 = s;
         reverse(s.begin(),s.end());
         string s2 = s;
-        vector<vector<int>> dp(n+1,vector<int>(n+1,0));
+        vector<int> prev(n+1,0), cur(n+1,0);
         
         for(int i=1;i<=n;i++){
             for(int j=1;j<=n;j++){
-                if(s1[i-1]==s2[j-1]) dp[i][j] = 1 + dp[i-1][j-1];
+                if(s1[i-1]==s2[j-1]) cur[j] = 1 + prev[j-1];
                 else{
-                    int first = dp[i-1][j];
-                    int second = dp[i][j-1];
+                    int first = prev[j];
+                    int second = cur[j-1];
 
-                    dp[i][j] = max(first,second);
+                    cur[j] = max(first,second);
                 }
-                
-                
             }
+            prev = cur;
         }
 
-        int lps = dp[n][n];
+        int lps = prev[n];
 
         return n-lps;
     }
