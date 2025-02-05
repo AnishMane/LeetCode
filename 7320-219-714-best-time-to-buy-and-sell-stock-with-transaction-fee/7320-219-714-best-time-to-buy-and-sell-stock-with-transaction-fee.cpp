@@ -22,7 +22,24 @@ public:
 
     int maxProfit(vector<int>& prices, int fee) {
         int n = prices.size();
-        vector<vector<int>> dp(n,vector<int>(2,-1));
-        return recursion(0,1,fee,prices,dp);
+        vector<vector<int>> dp(n+1,vector<int>(2,0));
+        
+        for(int ind=n-1;ind>=0;ind--){
+            for(int buy=0;buy<=1;buy++){
+                if(buy==1){
+                    int nottake = dp[ind+1][1];
+                    int take = -prices[ind] + dp[ind+1][0];
+
+                    dp[ind][buy] = max(nottake,take);
+                }
+                else{
+                    int nottake = dp[ind+1][0];
+                    int take = prices[ind] + dp[ind+1][1] - fee;
+
+                    dp[ind][buy] = max(nottake,take);
+                }
+            }
+        }
+        return dp[0][1];
     }
 };
