@@ -1,17 +1,23 @@
 class Solution {
 public:
     void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
-        vector<int> num1copy(nums1.begin(),nums1.begin()+m);
-        int i=0,j=0,k=0;
-
-        while(k<m+n){
-            if(j>=n || (i<m && num1copy[i]<nums2[j])){
-                nums1[k++] = num1copy[i++];
+        int last = m+n-1;
+        
+        while(m>0 && n>0){
+            if(nums1[m-1]>nums2[n-1]){
+                nums1[last] = nums1[m-1];
+                m--;
             }
             else{
-                nums1[k++] = nums2[j++];
+                nums1[last] = nums2[n-1];
+                n--;
             }
+            last--;
         }
-
+        while(n>0){
+            nums1[last] = nums2[n-1];
+            n--;
+            last--;
+        }
     }
 };
