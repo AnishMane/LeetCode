@@ -1,50 +1,60 @@
 class MyCircularQueue {
 private:
-    vector<int> queue;
-    int size;
-    int front;
-    int rear;
-    int capacity;
+    struct ListNode{
+        int val;
+        ListNode* next;
+        ListNode* prev;
+        ListNode(int val, ListNode* next=nullptr, ListNode* prev=nullptr){
+            this->val = val;
+            this->next = next;
+            this->prev = prev;
+        }
+    };
+    int space;
+    ListNode* left;
+    ListNode* right;
+
 public:
     MyCircularQueue(int k) {
-        queue = vector<int>(k);
-        size = 0;
-        front = 0;
-        rear = -1;
-        capacity = k;
+        space = k;
+        left = new ListNode(0);
+        right = new ListNode(0,nullptr,left);
+        left->next = right;
     }
     
     bool enQueue(int value) {
         if(isFull()) return false;
-        rear = (rear+1)%capacity;
-        queue[rear] = value;
-        size++;
+        ListNode* cur = new ListNode(value,right,right->prev);
+        right->prev->next = cur;
+        right->prev = cur;
+        space--;
         return true;
     }
     
     bool deQueue() {
         if(isEmpty()) return false;
-        front = (front+1)%capacity;
-        size--;
+        left->next = left->next->next;
+        left->next->prev = left;
+        space++;
         return true;
     }
     
     int Front() {
         if(isEmpty()) return -1;
-        return queue[front];
+        return left->next->val;
     }
     
     int Rear() {
         if(isEmpty()) return -1;
-        return queue[rear];   
+        return right->prev->val;
     }
     
     bool isEmpty() {
-        return size==0;
+        return left->next==right;
     }
     
     bool isFull() {
-        return size == capacity;
+        return space==0;
     }
 };
 
